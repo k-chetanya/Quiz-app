@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Exam</title>
+    <style>
+        /* Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            height: 100vh;
+        }
+        /* Quiz Container */
+        #container {
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            width: 380px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        /* Title */
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        /* Question */
+        #questions {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #444;
+        }
+        /* Buttons Layout */
+        #main {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        /* Option Buttons */
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        /* Option Buttons Styling */
+        #main button {
+            background-color: #f1f1f1;
+            color: #333;
+            border: 2px solid transparent;
+        }
+        /* Hover Effect */
+        #main button:hover {
+            background-color: #ddd;
+        }
+        /* Selected Option */
+        .selected {
+            background-color: #4caf50 !important;
+            color: white !important;
+            border: 2px solid #388e3c !important;
+        }
+        /* Navigation Buttons */
+        #prev, #next, #submit {
+            background-color: #007bff;
+            color: white;
+            margin: 5px;
+        }
+        #prev:hover, #next:hover, #submit:hover {
+            background-color: #0056b3;
+        }
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Quiz App</h1>
+        <div id="main">
+            <div id="questions"></div>
+            <button id="op1">op1</button>
+            <button id="op2">op2</button>
+            <button id="op3">op3</button>
+            <button id="op4">op4</button>
+        </div>
+        <div>
+            <button id="prev">Prev</button>
+            <button id="next">Next</button>
+            <button id="submit" type="submit">Submit</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            { 
+                question: "What is 2 + 2?", 
+                options: ["3", "4", "5", "6"], 
+                correct: "4" 
+            },
+            { 
+                question: "Which is the capital of France?", 
+                options: ["London", "Berlin", "Paris", "Madrid"], 
+                correct: "Paris" 
+            },
+            { 
+                question: "Which programming language is used for web development?", 
+                options: ["Python", "C++", "JavaScript", "Java"], 
+                correct: "JavaScript" 
+            }
+        ];
+        let i = 0;
+        let userAns = Array(questions.length).fill(null); // Initialize with null for each question
+
+        function loadQuestion() {
+            let q = questions[i];
+            document.getElementById("questions").innerText = q.question;
+            document.getElementById("op1").innerText = q.options[0];
+            document.getElementById("op2").innerText = q.options[1];
+            document.getElementById("op3").innerText = q.options[2];
+            document.getElementById("op4").innerText = q.options[3];
+
+            document.querySelectorAll("button[id^='op']").forEach(button => {
+                button.classList.remove("selected");
+                button.onclick = () => selectAnswer(button.innerText);
+                if (userAns[i] === button.innerText) {
+                    button.classList.add("selected");
+                }
+            });
+        }
+
+        function selectAnswer(ans) {
+            userAns[i] = ans; // Store the selected answer
+            document.querySelectorAll("button[id^='op']").forEach(button => {
+                button.classList.remove("selected");
+                if (button.innerText === ans) {
+                    button.classList.add("selected");
+                }
+            });
+        }
+
+        document.getElementById("prev").onclick = () => {
+            if (i > 0) {
+                i--;
+                loadQuestion();
+            }
+        };
+
+        document.getElementById("next").onclick = () => {
+            if (i < questions.length - 1) {
+                i++;
+                loadQuestion();
+            }
+        };
+
+        document.getElementById("submit").onclick = () => {
+            let score = 0;
+            questions.forEach((q, ind) => {
+                if (userAns[ind] === q.correct) {
+                    score++;
+                }
+            });
+            alert(`Your score: ${score}/${questions.length}`);
+        };
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
