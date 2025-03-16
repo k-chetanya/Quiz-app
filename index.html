@@ -156,22 +156,32 @@
     </div>
     <script>
         const questions = [
-            { 
-                question: "What is 2 + 2?", 
-                options: ["3", "4", "5", "6"], 
-                correct: "4" 
-            },
-            { 
-                question: "Which is the capital of France?", 
-                options: ["London", "Berlin", "Paris", "Madrid"], 
-                correct: "Paris" 
-            },
-            { 
-                question: "Which programming language is used for web development?", 
-                options: ["Python", "C++", "JavaScript", "Java"], 
-                correct: "JavaScript" 
-            }
-        ];
+    { 
+        question: "What does HTML stand for?", 
+        options: ["Hyperlinks and Text Markup Language", "Hyper Text Markup Language", "Home Tool Markup Language", "Hyper Transfer Markup Language"], 
+        correct: "Hyper Text Markup Language" 
+    },
+    { 
+        question: "Which CSS property is used to change the text color of an element?", 
+        options: ["text-color", "color", "font-color", "background-color"], 
+        correct: "color" 
+    },
+    { 
+        question: "Which of the following is NOT a JavaScript framework/library?", 
+        options: ["React", "Vue", "Django", "Angular"], 
+        correct: "Django" 
+    },
+    { 
+        question: "Which HTML tag is used to create a hyperlink?", 
+        options: ["<link>", "<a>", "<href>", "<hlink>"], 
+        correct: "<a>" 
+    },
+    { 
+        question: "What is the default HTTP method used when submitting an HTML form without specifying a method?", 
+        options: ["GET", "POST", "PUT", "DELETE"], 
+        correct: "GET" 
+    }
+];
         let i = 0;
         let userAns = Array(questions.length).fill(null); // Initialize with null for each question
 
