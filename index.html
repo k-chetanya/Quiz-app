@@ -26,9 +26,14 @@
             border-radius: 15px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             padding: 20px;
+            
             width: 380px;
             animation: fadeIn 0.5s ease-in-out;
         }
+        #container p{
+          margin:10px;
+        }
+        
         /* Title */
         h1 {
             color: #333;
@@ -76,7 +81,7 @@
             border: 2px solid #388e3c !important;
         }
         /* Navigation Buttons */
-        #prev, #next, #submit {
+        #prev, #next {
             background-color: #007bff;
             color: white;
             margin: 5px;
@@ -84,6 +89,23 @@
         #prev:hover, #next:hover, #submit:hover {
             background-color: #0056b3;
         }
+        #submit {
+    background-color: #28a745; /* Green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#submit:hover {
+    background-color: #218838;
+}
+
         /* Fade-in Animation */
         @keyframes fadeIn {
             from {
@@ -95,9 +117,26 @@
                 transform: translateY(0);
             }
         }
+        #nav-buttons{
+          display: flex;
+          justify-content: space-between;
+          margin: 14px 0px 14px 0px;
+        }
+        #timer {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7); /* Dim background */
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
+   <div id="timer">Time Left: 60s</div>
     <div id="container">
         <h1>Quiz App</h1>
         <div id="main">
@@ -108,8 +147,10 @@
             <button id="op4">op4</button>
         </div>
         <div>
-            <button id="prev">Prev</button>
-            <button id="next">Next</button>
+        <div id="nav-buttons">
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+</div>
             <button id="submit" type="submit">Submit</button>
         </div>
     </div>
@@ -152,7 +193,7 @@
         }
 
         function selectAnswer(ans) {
-            userAns[i] = ans; // Store the selected answer
+            userAns[i] = ans; 
             document.querySelectorAll("button[id^='op']").forEach(button => {
                 button.classList.remove("selected");
                 if (button.innerText === ans) {
@@ -175,15 +216,46 @@
             }
         };
 
-        document.getElementById("submit").onclick = () => {
-            let score = 0;
-            questions.forEach((q, ind) => {
-                if (userAns[ind] === q.correct) {
-                    score++;
-                }
-            });
-            alert(`Your score: ${score}/${questions.length}`);
-        };
+function submitQuiz() {
+    clearInterval(timeInterval);
+    
+    let score = 0;
+    let attempted = 0;
+    let total = questions.length;
+    questions.forEach((q, j) => {
+        if (userAns[j] === q.correct) {
+            score++;
+        }
+      if(userAns[j] !== null) attempted++;
+    });
+    let result = Math.round((score/total)*100);
+    
+    let progressBar = `
+    <div style  = "width:100%; background:#ddd; border-radius:10px; height:20px; ">
+    <div style = "width:${result}%; background:blue; height:100%; border-radius:10px;"></div>
+    </div>
+    `;
+    
+    document.getElementById("container").innerHTML = `
+    <h1>Results</h1>
+    <p><b>No of questions attempted :<b> ${attempted}</p>
+    <p>Total questions:${total}</p>
+    <h3 style = "margin:15px">Score:${score}/ ${total}</h3>
+    
+    ${progressBar}`;
+    
+}
+
+timeleft = 60;
+let timeInterval = setInterval(() => {
+document.getElementById("timer").innerText = `Time Left: ${timeleft--}s`;
+if(timeleft < 0){
+  clearInterval(timeInterval);
+  submitQuiz();
+}
+},1000);
+
+document.getElementById("submit").onclick = submitQuiz;
 
         window.onload = loadQuestion;
     </script>
